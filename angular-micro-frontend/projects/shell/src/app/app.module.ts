@@ -20,10 +20,6 @@ import { environment } from '../environments/environment';
       {
         path: '',
         component: AppComponent
-      },
-      {
-        path: 'mfe1',
-        loadChildren: () => import('mfe1/Module').then(m => m.RemoteEntryModule)
       }
     ]),
     StoreModule.forRoot({ app: appReducer }),

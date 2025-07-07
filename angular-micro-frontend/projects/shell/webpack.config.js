@@ -1,6 +1,7 @@
-const ModuleFederationPlugin = require("@module-federation/webpack");
+const { ModuleFederationPlugin } = require("webpack");
 
 module.exports = {
+  mode: "development",
   plugins: [
     new ModuleFederationPlugin({
       name: "shell",
