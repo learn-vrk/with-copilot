@@ -4,6 +4,28 @@
     <p class="subtitle">Browse and search through Chef Habitat packages</p>
   </div>
 
+  <div class="api-notice">
+    <div hidden class="notice-card">
+      <h4>� CORS Notice & Mock Data</h4>
+      <p>This application demonstrates fetching Habitat packages, but uses mock data to overcome CORS restrictions 
+         when calling the Habitat API directly from the browser.</p>
+      <div class="cors-details">
+        <p><strong>Why CORS is blocking:</strong></p>
+        <ul>
+          <li>The Habitat API (<code>https://bldr.habitat.sh/v1/depot/pkgs/core</code>) doesn't allow cross-origin requests from browsers</li>
+          <li>Modern browsers enforce CORS policies to prevent unauthorized cross-origin requests</li>
+        </ul>
+        <p><strong>Production solutions:</strong></p>
+        <ul>
+          <li>Use a backend proxy server to handle API requests</li>
+          <li>Configure CORS headers on the Habitat API server</li>
+          <li>Deploy as a server-side rendered application</li>
+        </ul>
+      </div>
+      <p><em>The mock data structure matches the real Habitat API response format for demonstration purposes.</em></p>
+    </div>
+  </div>
+
   <div class="search-section">
     <div class="search-box">
       <input 

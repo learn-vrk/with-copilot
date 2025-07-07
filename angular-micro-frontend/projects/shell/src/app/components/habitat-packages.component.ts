@@ -95,4 +95,11 @@ export class HabitatPackagesComponent implements OnInit, OnDestroy {
       console.error('Failed to copy command: ', err);
     });
   }
+
+  tryRealAPI(): void {
+    // Attempt to use the real Habitat API (will likely fail due to CORS)
+    this.store.dispatch(HabitatActions.clearPackages());
+    // This would need to be implemented in the service and effects
+    console.log('Real API call would be made here, but CORS prevents it');
+  }
 }

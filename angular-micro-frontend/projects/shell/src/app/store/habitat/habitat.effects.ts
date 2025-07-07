@@ -1,32 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import * as HabitatActions from './habitat.actions';
-import { HabitatPackageResponse } from './habitat.models';
+import { HabitatService } from '../../services/habitat.service';
 
 @Injectable()
 export class HabitatEffects {
-  private apiUrl = 'https://bldr.habitat.sh/v1/depot/pkgs/core';
 
   loadPackages$ = createEffect(() =>
     this.actions$.pipe(
       ofType(HabitatActions.loadPackages),
       switchMap(({ page, searchQuery }) => {
-        const params = new URLSearchParams();
-        
-        if (page) {
-          params.append('range', `${page * 50}-${(page + 1) * 50 - 1}`);
-        }
-        
-        if (searchQuery) {
-          params.append('q', searchQuery);
-        }
-        
-        const url = `${this.apiUrl}?${params.toString()}`;
-        
-        return this.http.get<HabitatPackageResponse>(url).pipe(
+        return this.habitatService.getPackages(page, searchQuery).pipe(
           map(response => HabitatActions.loadPackagesSuccess({ response })),
           catchError(error => of(HabitatActions.loadPackagesFailure({ 
             error: error.message || 'Failed to load packages' 
@@ -52,6 +38,6 @@ export class HabitatEffects {
 
   constructor(
     private actions$: Actions,
-    private http: HttpClient
+    private habitatService: HabitatService
   ) {}
 }
