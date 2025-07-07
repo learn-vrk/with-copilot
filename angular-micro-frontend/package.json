@@ -10,13 +10,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "serve:shell": "ng serve shell --port 4200",
-    "serve:mfe1": "ng serve mfe1 --port 4201",
-    "build:shell": "ng build shell",
-    "build:mfe1": "ng build mfe1"
+    "build:shell": "ng build shell"
   },
   "private": true,
   "dependencies": {
-    "@angular-builders/custom-webpack": "^18.0.0",
     "@angular/animations": "^18.0.0",
     "@angular/common": "^18.0.0",
     "@angular/compiler": "^18.0.0",

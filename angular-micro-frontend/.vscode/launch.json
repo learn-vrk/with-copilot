@@ -14,20 +14,6 @@
         "/*": "*",
         "/./~/*": "${webRoot}/node_modules/*"
       }
-    },
-    {
-      "name": "Launch MFE1 App",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:4201",
-      "webRoot": "${workspaceFolder}",
-      "sourceMapPathOverrides": {
-        "webpack:/*": "${webRoot}/*",
-        "/./*": "${webRoot}/*",
-        "/src/*": "${webRoot}/projects/mfe1/src/*",
-        "/*": "*",
-        "/./~/*": "${webRoot}/node_modules/*"
-      }
     }
   ]
 }

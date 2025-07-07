@@ -20,14 +20,6 @@ angular-micro-frontend/
 │   │   │   └── styles.scss
 │   │   ├── webpack.config.js     # Module Federation config
 │   │   └── tsconfig.app.json
-│   └── mfe1/                     # Micro Frontend 1
-│       ├── src/
-│       │   ├── app/
-│       │   │   ├── remote-entry/ # Remote entry module
-│       │   │   ├── app.component.ts
-│       │   │   └── app.module.ts
-│       │   ├── environments/
-│       │   ├── index.html
 │       │   ├── main.ts
 │       │   └── styles.scss
 │       ├── webpack.config.js     # Module Federation config
@@ -52,17 +44,15 @@ angular-micro-frontend/
 
 ## 🚀 Key Features
 1. **Shell Application**: Main container with navigation and global state
-2. **Micro Frontend**: Independent MFE1 application
+2. **Habitat Packages Browser**: Search and browse Chef Habitat packages
 3. **NgRX Store**: Complete state management setup
-4. **Module Federation**: Runtime module sharing
-5. **Responsive Design**: Modern UI with SCSS
-6. **Development Tools**: VS Code tasks and debug configuration
+4. **Responsive Design**: Modern UI with SCSS
+5. **Development Tools**: VS Code tasks and debug configuration
 
 ## 📝 Next Steps
 1. Install dependencies: `npm install`
 2. Start shell application: `npm run serve:shell`
-3. Start micro frontend: `npm run serve:mfe1`
-4. Open http://localhost:4200
+3. Open http://localhost:4200
 
 ## 🎨 UI Components
 - Modern hero section with gradient background
@@ -70,12 +60,11 @@ angular-micro-frontend/
 - Responsive navigation
 - Loading states and error handling
 - Action buttons with animations
+- Habitat packages browser with search and pagination
 
 ## 🛠️ Development Commands
 - `npm run serve:shell` - Start shell (port 4200)
-- `npm run serve:mfe1` - Start MFE1 (port 4201)
 - `npm run build:shell` - Build shell application
-- `npm run build:mfe1` - Build micro frontend
 - Use VS Code tasks for convenience
 
 ## 📊 State Management

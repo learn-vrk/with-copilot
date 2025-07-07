@@ -7,7 +7,7 @@ module.exports = {
       name: "shell",
       
       remotes: {
-        "mfe1": "mfe1@http://localhost:4201/remoteEntry.js"
+        // No micro frontends configured
       },
       
       shared: {
