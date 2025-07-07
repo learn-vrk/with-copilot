@@ -111,4 +111,4 @@ This project supports all modern browsers that support ES2022.
 
 ## License
 
-MIT License
+Apache License 2.0
