@@ -1,0 +1,53 @@
+<div class="container">
+  <header class="header">
+    <nav class="nav">
+      <h1>{{title}}</h1>
+      <ul class="nav-links">
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/mfe1">Micro Frontend 1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="hero-section">
+      <h2>Welcome to Angular Micro Frontend</h2>
+      <div class="message-container">
+        <div *ngIf="loading$ | async" class="loading">Loading...</div>
+        <div *ngIf="error$ | async as error" class="error">Error: {{error}}</div>
+        <div class="message" *ngIf="!(loading$ | async) && !(error$ | async)">
+          <h3>{{message$ | async}}</h3>
+        </div>
+      </div>
+      
+      <div class="actions">
+        <button class="btn btn-primary" (click)="updateMessage('Hello from Shell!')">
+          Update Message
+        </button>
+        <button class="btn btn-secondary" (click)="loadMessage()">
+          Load Message
+        </button>
+      </div>
+    </div>
+
+    <section class="features">
+      <h3>Features</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>Angular v18</h4>
+          <p>Latest Angular framework with modern features</p>
+        </div>
+        <div class="feature-card">
+          <h4>Micro Frontends</h4>
+          <p>Module Federation for scalable architecture</p>
+        </div>
+        <div class="feature-card">
+          <h4>NgRX Store</h4>
+          <p>State management with actions, reducers, and effects</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <router-outlet></router-outlet>
+</div>
