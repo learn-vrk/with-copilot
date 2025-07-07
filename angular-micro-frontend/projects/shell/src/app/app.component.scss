@@ -75,6 +75,15 @@
   transform: translateY(-2px);
 }
 
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+}
+
 .features {
   padding: 2rem 0;
 }
@@ -115,6 +124,24 @@
 .feature-card p {
   color: #7f8c8d;
   line-height: 1.6;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.nav-links a:hover {
+  color: #3498db;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-links a.router-link-active {
+  background-color: #3498db;
+  color: white;
 }
 
 @keyframes pulse {

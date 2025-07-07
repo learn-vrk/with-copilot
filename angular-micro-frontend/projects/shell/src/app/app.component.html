@@ -4,13 +4,13 @@
       <h1>{{title}}</h1>
       <ul class="nav-links">
         <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/mfe1">Micro Frontend 1</a></li>
+        <li><a routerLink="/packages">Habitat Packages</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="main-content">
-    <div class="hero-section">
+    <div class="hero-section" *ngIf="isHomePage()">
       <h2>Welcome to Angular Micro Frontend</h2>
       <div class="message-container">
         <div *ngIf="loading$ | async" class="loading">Loading...</div>
@@ -27,10 +27,13 @@
         <button class="btn btn-secondary" (click)="loadMessage()">
           Load Message
         </button>
+        <a routerLink="/packages" class="btn btn-info">
+          View Habitat Packages
+        </a>
       </div>
     </div>
 
-    <section class="features">
+    <section class="features" *ngIf="isHomePage()">
       <h3>Features</h3>
       <div class="feature-grid">
         <div class="feature-card">
@@ -38,8 +41,8 @@
           <p>Latest Angular framework with modern features</p>
         </div>
         <div class="feature-card">
-          <h4>Micro Frontends</h4>
-          <p>Module Federation for scalable architecture</p>
+          <h4>Habitat Packages</h4>
+          <p>Browse and search Chef Habitat packages with real-time data</p>
         </div>
         <div class="feature-card">
           <h4>NgRX Store</h4>

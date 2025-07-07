@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectMessage, selectLoading, selectError } from './store/app.selectors';
@@ -15,7 +16,10 @@ export class AppComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    private router: Router
+  ) {
     this.message$ = this.store.select(selectMessage);
     this.loading$ = this.store.select(selectLoading);
     this.error$ = this.store.select(selectError);
@@ -31,5 +35,9 @@ export class AppComponent implements OnInit {
 
   loadMessage() {
     this.store.dispatch(AppActions.loadMessage());
+  }
+
+  isHomePage(): boolean {
+    return this.router.url === '/';
   }
 }

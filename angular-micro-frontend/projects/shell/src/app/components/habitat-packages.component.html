@@ -1,0 +1,102 @@
+<div class="habitat-packages-container">
+  <div class="header">
+    <h1>Habitat Packages</h1>
+    <p class="subtitle">Browse and search through Chef Habitat packages</p>
+  </div>
+
+  <div class="search-section">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [formControl]="searchControl"
+        placeholder="Search packages..."
+        class="search-input"
+      >
+      <button 
+        *ngIf="searchControl.value" 
+        (click)="clearSearch()"
+        class="clear-button"
+        aria-label="Clear search"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+
+  <div class="packages-info" *ngIf="totalCount$ | async as totalCount">
+    <p>Showing <strong>{{ (packages$ | async)?.length || 0 }}</strong> of <strong>{{ totalCount }}</strong> packages</p>
+  </div>
+
+  <div class="loading" *ngIf="loading$ | async">
+    <div class="spinner"></div>
+    <p>Loading packages...</p>
+  </div>
+
+  <div class="error" *ngIf="error$ | async as error">
+    <div class="error-message">
+      <h3>Error Loading Packages</h3>
+      <p>{{ error }}</p>
+    </div>
+  </div>
+
+  <div class="packages-grid" *ngIf="packages$ | async as packages">
+    <div class="package-card" *ngFor="let package of packages; trackBy: trackByPackage">
+      <div class="package-header">
+        <h3 class="package-name">{{ package.origin }}/{{ package.name }}</h3>
+        <div class="package-version">
+          <span class="version">{{ package.version }}</span>
+          <span class="release">{{ package.release }}</span>
+        </div>
+      </div>
+      
+      <div class="package-details">
+        <div class="channels">
+          <span class="label">Channels:</span>
+          <span 
+            *ngFor="let channel of package.channels" 
+            class="badge"
+            [ngClass]="getChannelBadgeClass(channel)"
+          >
+            {{ channel }}
+          </span>
+        </div>
+        
+        <div class="platforms">
+          <span class="label">Platforms:</span>
+          <span 
+            *ngFor="let platform of package.platforms" 
+            class="badge badge-platform"
+          >
+            {{ platform }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="package-actions">
+        <button class="btn btn-primary" (click)="viewPackage(package)">
+          View Details
+        </button>
+        <button class="btn btn-secondary" (click)="copyInstallCommand(package)">
+          Copy Install
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="load-more" *ngIf="hasMorePackages$ | async">
+    <button 
+      class="btn btn-outline"
+      (click)="loadMorePackages()"
+      [disabled]="loading$ | async"
+    >
+      Load More Packages
+    </button>
+  </div>
+
+  <div class="no-packages" *ngIf="!(loading$ | async) && (packages$ | async)?.length === 0">
+    <div class="empty-state">
+      <h3>No packages found</h3>
+      <p>Try adjusting your search criteria or check back later.</p>
+    </div>
+  </div>
+</div>
