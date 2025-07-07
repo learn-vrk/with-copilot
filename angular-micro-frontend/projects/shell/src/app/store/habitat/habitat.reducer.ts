@@ -47,6 +47,7 @@ export const habitatReducer = createReducer(
     ...state,
     packages: [],
     currentPage: 0,
-    totalCount: 0
+    totalCount: 0,
+    searchQuery: ''
   }))
 );

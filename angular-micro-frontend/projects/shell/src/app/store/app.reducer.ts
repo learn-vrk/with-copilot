@@ -8,7 +8,7 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-  message: 'Hello, World!',
+  message: '',
   loading: false,
   error: null
 };
@@ -17,7 +17,8 @@ export const appReducer = createReducer(
   initialState,
   on(AppActions.updateMessage, (state, { message }) => ({
     ...state,
-    message
+    message,
+    error: null
   })),
   on(AppActions.loadMessage, (state) => ({
     ...state,
@@ -33,6 +34,7 @@ export const appReducer = createReducer(
   on(AppActions.loadMessageFailure, (state, { error }) => ({
     ...state,
     loading: false,
-    error
+    error,
+    message: ''
   }))
 );
