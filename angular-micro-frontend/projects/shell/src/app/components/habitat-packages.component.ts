@@ -9,6 +9,37 @@ import { HabitatPackage } from '../store/habitat/habitat.models';
 import * as HabitatActions from '../store/habitat/habitat.actions';
 import * as HabitatSelectors from '../store/habitat/habitat.selectors';
 
+/**
+ * @fileoverview Component for displaying and managing Chef Habitat packages
+ * using Kendo Angular UI components with NgRX state management.
+ * 
+ * This component provides:
+ * - A searchable, paginated grid of Habitat packages
+ * - Package details viewing and install command copying
+ * - Real-time search with debouncing
+ * - Loading states and error handling
+ * - Modern UI using Kendo Angular components
+ * 
+ * @author Angular Development Team
+ * @since 1.0.0
+ */
+
+/**
+ * Component for displaying Chef Habitat packages in a modern, searchable grid interface.
+ * 
+ * Features:
+ * - Kendo Angular Grid with pagination, sorting, and filtering
+ * - Real-time search with 300ms debouncing
+ * - Package installation command copying
+ * - Direct links to package details on Habitat Builder
+ * - Responsive design with loading and error states
+ * - NgRX integration for state management
+ * 
+ * @example
+ * ```html
+ * <app-habitat-packages></app-habitat-packages>
+ * ```
+ */
 @Component({
   selector: 'app-habitat-packages',
   templateUrl: './habitat-packages.component.html',

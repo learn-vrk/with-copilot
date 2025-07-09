@@ -97,6 +97,8 @@ The application uses NgRX for state management:
 - `npm run serve:shell` - Start shell application
 - `npm run build:shell` - Build shell application
 - `npm start` - Start shell application (default)
+- `npm test` - Run tests once and exit
+- `npm run test:watch` - Run tests in watch mode
 
 ## Browser Support
 

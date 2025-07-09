@@ -1,23 +1,101 @@
+/**
+ * @fileoverview Service for handling Chef Habitat package API operations.
+ * 
+ * This service provides methods to fetch package data from the Chef Habitat
+ * Builder API, with fallback to mock data for demo purposes due to CORS restrictions.
+ * 
+ * @author Angular Development Team
+ * @since 1.0.0
+ */
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, delay } from 'rxjs';
 import { HabitatPackageResponse, HabitatPackage } from '../store/habitat/habitat.models';
 
+/**
+ * Service for interacting with Chef Habitat package data.
+ * 
+ * This service provides methods to fetch package information from the Chef Habitat
+ * Builder API. Currently uses mock data for demonstration purposes due to CORS
+ * restrictions when calling the real API from a browser environment.
+ * 
+ * @example
+ * ```typescript
+ * constructor(private habitatService: HabitatService) {}
+ * 
+ * loadPackages() {
+ *   this.habitatService.getPackages(0, 'nginx').subscribe(response => {
+ *     console.log('Packages:', response.data);
+ *   });
+ * }
+ * ```
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class HabitatService {
+  /** Base URL for the Chef Habitat Builder API */
   private apiUrl = 'https://bldr.habitat.sh/v1/depot/pkgs/core';
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Fetches packages from the Chef Habitat Builder API or mock data.
+   * 
+   * Currently returns mock data due to CORS restrictions. In a production
+   * environment, this would make actual HTTP requests to the Habitat API
+   * through a backend proxy.
+   * 
+   * @param page - Zero-based page number for pagination
+   * @param searchQuery - Optional search query to filter packages
+   * @returns Observable containing the package response data
+   * 
+   * @example
+   * ```typescript
+   * // Load first page of all packages
+   * this.habitatService.getPackages(0).subscribe(response => {
+   *   console.log('Total packages:', response.total_count);
+   *   console.log('Packages:', response.data);
+   * });
+   * 
+   * // Search for nginx packages
+   * this.habitatService.getPackages(0, 'nginx').subscribe(response => {
+   *   console.log('Nginx packages:', response.data);
+   * });
+   * ```
+   */
   getPackages(page: number = 0, searchQuery?: string): Observable<HabitatPackageResponse> {
     // For demo purposes, we'll use mock data due to CORS restrictions
     // In a real application, you would need a backend proxy or CORS-enabled API
     return this.getMockPackages(page, searchQuery);
   }
 
+  /**
+   * Provides mock package data for demonstration purposes.
+   * 
+   * This method simulates the Chef Habitat Builder API response with a
+   * comprehensive set of mock packages including popular tools and services.
+   * Supports pagination and search functionality.
+   * 
+   * @param page - Zero-based page number for pagination
+   * @param searchQuery - Optional search query to filter packages by name
+   * @returns Observable containing mock package response data
+   * 
+   * @private
+   * @example
+   * ```typescript
+   * // This is called internally by getPackages()
+   * this.getMockPackages(0, 'nginx').subscribe(response => {
+   *   console.log('Mock nginx packages:', response.data);
+   * });
+   * ```
+   */
   private getMockPackages(page: number = 0, searchQuery?: string): Observable<HabitatPackageResponse> {
+    /** 
+     * Mock data representing typical Chef Habitat packages.
+     * Each package includes origin, name, version, release, channels, and platforms.
+     */
     const allPackages: HabitatPackage[] = [
       {
         origin: 'core',
@@ -181,7 +259,7 @@ export class HabitatService {
       }
     ];
 
-    // Filter packages based on search query
+    // Filter packages based on search query if provided
     let filteredPackages = allPackages;
     if (searchQuery && searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
@@ -191,12 +269,13 @@ export class HabitatService {
       );
     }
 
-    // Simulate pagination
+    // Implement pagination with configurable page size
     const pageSize = 10;
     const startIndex = page * pageSize;
     const endIndex = Math.min(startIndex + pageSize, filteredPackages.length);
     const paginatedPackages = filteredPackages.slice(startIndex, endIndex);
 
+    // Create response object matching Habitat API structure
     const response: HabitatPackageResponse = {
       range_start: startIndex,
       range_end: endIndex - 1,
@@ -204,11 +283,32 @@ export class HabitatService {
       data: paginatedPackages
     };
 
-    // Simulate network delay
+    // Simulate network delay for realistic UX
     return of(response).pipe(delay(500));
   }
 
-  // Alternative method to try the real API (will likely fail due to CORS)
+  /**
+   * Alternative method to call the real Chef Habitat Builder API.
+   * 
+   * This method demonstrates how to make actual HTTP requests to the Habitat API.
+   * It will likely fail in browser environments due to CORS restrictions unless
+   * the API is accessed through a backend proxy.
+   * 
+   * @param page - Zero-based page number for pagination
+   * @param searchQuery - Optional search query to filter packages
+   * @returns Observable containing the real API response
+   * 
+   * @example
+   * ```typescript
+   * // Attempt to call real API (may fail due to CORS)
+   * this.habitatService.tryRealAPI(0, 'nginx').subscribe({
+   *   next: response => console.log('Real API response:', response),
+   *   error: err => console.error('CORS error:', err)
+   * });
+   * ```
+   * 
+   * @see {@link https://bldr.habitat.sh/} Chef Habitat Builder
+   */
   tryRealAPI(page: number = 0, searchQuery?: string): Observable<HabitatPackageResponse> {
     const params = new URLSearchParams();
     
