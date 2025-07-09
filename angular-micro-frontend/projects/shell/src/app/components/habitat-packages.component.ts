@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { takeUntil, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { GridDataResult, DataStateChangeEvent } from '@progress/kendo-angular-grid';
+import { State } from '@progress/kendo-data-query';
 import { HabitatPackage } from '../store/habitat/habitat.models';
 import * as HabitatActions from '../store/habitat/habitat.actions';
 import * as HabitatSelectors from '../store/habitat/habitat.selectors';
@@ -19,6 +21,13 @@ export class HabitatPackagesComponent implements OnInit, OnDestroy {
   totalCount$: Observable<number>;
   hasMorePackages$: Observable<boolean>;
   
+  // Kendo Grid properties
+  gridData$: Observable<GridDataResult>;
+  state: State = {
+    skip: 0,
+    take: 10
+  };
+  
   searchControl = new FormControl('');
   private destroy$ = new Subject<void>();
 
@@ -28,6 +37,17 @@ export class HabitatPackagesComponent implements OnInit, OnDestroy {
     this.error$ = this.store.select(HabitatSelectors.selectError);
     this.totalCount$ = this.store.select(HabitatSelectors.selectTotalCount);
     this.hasMorePackages$ = this.store.select(HabitatSelectors.selectHasMorePackages);
+    
+    // Create grid data observable
+    this.gridData$ = combineLatest([
+      this.packages$,
+      this.totalCount$
+    ]).pipe(
+      map(([packages, total]) => ({
+        data: packages || [],
+        total: total || 0
+      }))
+    );
   }
 
   ngOnInit(): void {
@@ -101,5 +121,22 @@ export class HabitatPackagesComponent implements OnInit, OnDestroy {
     this.store.dispatch(HabitatActions.clearPackages());
     // This would need to be implemented in the service and effects
     console.log('Real API call would be made here, but CORS prevents it');
+  }
+
+  onDataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    // Handle pagination, sorting, filtering through NgRX if needed
+    const page = Math.floor(state.skip! / state.take!);
+    this.store.dispatch(HabitatActions.loadPackages({ page }));
+  }
+
+  onSearch(): void {
+    const query = this.searchControl.value;
+    if (query) {
+      this.store.dispatch(HabitatActions.searchPackages({ query }));
+    } else {
+      this.store.dispatch(HabitatActions.clearPackages());
+      this.store.dispatch(HabitatActions.loadPackages({ page: 0 }));
+    }
   }
 }

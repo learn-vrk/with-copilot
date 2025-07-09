@@ -1,7 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
+
+// Kendo Angular imports for testing
+import { GridModule } from '@progress/kendo-angular-grid';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { LayoutModule } from '@progress/kendo-angular-layout';
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
+
 import { HabitatPackagesComponent } from './habitat-packages.component';
 import { HabitatPackage } from '../store/habitat/habitat.models';
 import * as HabitatActions from '../store/habitat/habitat.actions';
@@ -52,7 +61,15 @@ describe('HabitatPackagesComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [HabitatPackagesComponent],
-      imports: [ReactiveFormsModule],
+      imports: [
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        GridModule,
+        InputsModule,
+        ButtonsModule,
+        LayoutModule,
+        IndicatorsModule
+      ],
       providers: [
         { provide: Store, useValue: storeSpy }
       ]
