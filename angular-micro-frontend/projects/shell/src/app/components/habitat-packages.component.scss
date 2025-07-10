@@ -1,0 +1,226 @@
+/**
+ * Habitat Packages Component Styles
+ * Simplified design matching the official Chef Habitat Builder package list page
+ */
+
+.habitat-packages-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header Section */
+.header-section {
+  margin-bottom: 24px;
+  
+  .page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 8px 0;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+  }
+}
+
+/* Search Section */
+.search-section {
+  margin-bottom: 24px;
+  
+  .search-input {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* Loading Section */
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  text-align: center;
+  
+  p {
+    margin-top: 16px;
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+/* Error Section */
+.error-section {
+  margin-bottom: 24px;
+  
+  .error-message {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 4px;
+    color: #dc2626;
+    
+    .k-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+/* Simple Packages List */
+.packages-section {
+  .simple-packages-list {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    
+    .simple-package-item {
+      border-bottom: 1px solid #e5e7eb;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .simple-package-link {
+        display: block;
+        padding: 12px 16px;
+        color: #2563eb;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background-color: #f3f4f6;
+          color: #1d4ed8;
+          cursor: pointer;
+        }
+        
+        &:active {
+          background-color: #e5e7eb;
+        }
+      }
+    }
+  }
+  
+  /* Load More Button */
+  .load-more-section {
+    text-align: center;
+    margin-top: 24px;
+    
+    .load-more-button {
+      min-width: 160px;
+    }
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  
+  h3 {
+    font-size: 1.25rem;
+    margin: 0 0 8px 0;
+    color: #333;
+  }
+  
+  p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+/* API Notice */
+.api-notice {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 40px;
+  font-size: 0.85rem;
+  color: #475569;
+  
+  h4 {
+    font-size: 1rem;
+    margin: 0 0 12px 0;
+    color: #334155;
+  }
+  
+  p {
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .cors-details {
+    margin: 16px 0;
+    
+    ul {
+      margin: 8px 0 12px 20px;
+      padding: 0;
+      
+      li {
+        margin-bottom: 4px;
+        line-height: 1.4;
+      }
+    }
+    
+    code {
+      background-color: #e2e8f0;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.8rem;
+    }
+  }
+  
+  em {
+    font-style: italic;
+    color: #64748b;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .habitat-packages-container {
+    padding: 16px;
+  }
+  
+  .header-section {
+    .page-title {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .search-section {
+    .search-input {
+      max-width: 100%;
+    }
+  }
+  
+  .packages-section {
+    .simple-packages-list {
+      .simple-package-item {
+        .simple-package-link {
+          padding: 10px 12px;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+  
+  .api-notice {
+    padding: 16px;
+    font-size: 0.8rem;
+  }
+}

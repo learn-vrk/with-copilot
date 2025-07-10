@@ -1,186 +1,88 @@
 <div class="habitat-packages-container">
   <!-- Header Section -->
-  <kendo-card class="header-card">
-    <kendo-card-header>
-      <h1>Habitat Packages</h1>
-      <p class="subtitle">Browse and search through Chef Habitat packages</p>
-    </kendo-card-header>
-  </kendo-card>
+  <div class="header-section">
+    <h1 class="page-title">Search Packages</h1>
+    <p class="page-subtitle">Search Results</p>
+  </div>
 
   <!-- Search Section -->
-  <kendo-card class="search-card">
-    <kendo-card-body>
-      <div class="search-section">
-        <kendo-textbox
-          [formControl]="searchControl"
-          placeholder="Search packages..."
-          [clearButton]="true"
-          (valueChange)="onSearch()"
-          style="width: 100%; max-width: 400px;">
-        </kendo-textbox>
-      </div>
-    </kendo-card-body>
-  </kendo-card>
+  <div class="search-section">
+    <kendo-textbox
+      [formControl]="searchControl"
+      placeholder="Search Packages..."
+      [clearButton]="true"
+      (valueChange)="onSearch()"
+      class="search-input">
+    </kendo-textbox>
+  </div>
 
   <!-- Loading Indicator -->
   <div class="loading-section" *ngIf="loading$ | async">
     <kendo-loader
-      size="large"
+      size="medium"
       themeColor="primary">
     </kendo-loader>
     <p>Loading packages...</p>
   </div>
 
   <!-- Error Display -->
-  <kendo-card class="error-card" *ngIf="error$ | async as error">
-    <kendo-card-body>
-      <div class="error-content">
-        <h3>Error Loading Packages</h3>
-        <p>{{ error }}</p>
+  <div class="error-section" *ngIf="error$ | async as error">
+    <div class="error-message">
+      <span class="k-icon k-i-warning"></span>
+      <span>Error: {{ error }}</span>
+    </div>
+  </div>
+
+  <!-- Simple Packages List (matching official Habitat Builder) -->
+  <div class="packages-section" *ngIf="!(loading$ | async) && !(error$ | async)">
+    <div class="simple-packages-list">
+      <div 
+        *ngFor="let package of (gridData$ | async)?.data; trackBy: trackByPackage" 
+        class="simple-package-item">
+        <a (click)="viewPackage(package)" class="simple-package-link">
+          {{ package.origin }}/{{ package.name }}
+        </a>
       </div>
-    </kendo-card-body>
-  </kendo-card>
-
-  <!-- Packages Grid -->
-  <kendo-card class="grid-card" *ngIf="!(loading$ | async) && !(error$ | async)">
-    <kendo-card-body>
-      <kendo-grid
-        [data]="gridData$ | async"
-        [pageSize]="state.take"
-        [skip]="state.skip"
-        [pageable]="true"
-        [sortable]="true"
-        [filterable]="false"
-        [resizable]="true"
-        (dataStateChange)="onDataStateChange($event)"
-        style="height: 600px; width: 600px;">
-        
-        <!-- Package Name Column -->
-        <kendo-grid-column field="name" title="Package" [width]="200">
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <div class="package-name-cell">
-              <strong>{{ dataItem.origin }}/{{ dataItem.name }}</strong>
-              <div class="package-version">
-                <small>v{{ dataItem.version }}</small>
-              </div>
-            </div>
-          </ng-template>
-        </kendo-grid-column>
-
-        <!-- Version Column -->
-        <kendo-grid-column field="version" title="Version" [width]="120">
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <span class="version-badge">{{ dataItem.version }}</span>
-          </ng-template>
-        </kendo-grid-column>
-
-        <!-- Release Column -->
-        <kendo-grid-column field="release" title="Release" [width]="140">
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <span class="release-badge">{{ dataItem.release }}</span>
-          </ng-template>
-        </kendo-grid-column>
-
-        <!-- Channels Column -->
-        <kendo-grid-column title="Channels" [width]="200">
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <div class="channels-cell">
-              <span 
-                *ngFor="let channel of dataItem.channels" 
-                class="channel-badge"
-                [ngClass]="getChannelBadgeClass(channel)"
-                style="margin: 2px; padding: 2px 8px; border-radius: 4px; font-size: 12px; display: inline-block;">
-                {{ channel }}
-              </span>
-            </div>
-          </ng-template>
-        </kendo-grid-column>
-
-        <!-- Platforms Column -->
-        <kendo-grid-column title="Platforms" [width]="200">
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <div class="platforms-cell">
-              <span 
-                *ngFor="let platform of dataItem.platforms" 
-                class="platform-badge"
-                style="margin: 2px; padding: 2px 8px; border-radius: 4px; font-size: 12px; display: inline-block; background-color: #e3f2fd; color: #1976d2;">
-                {{ platform }}
-              </span>
-            </div>
-          </ng-template>
-        </kendo-grid-column>
-
-        <!-- Actions Column -->
-        <kendo-grid-column title="Actions" [width]="200">
-          <ng-template kendoGridCellTemplate let-dataItem>
-            <div class="actions-cell">
-              <button
-                kendoButton
-                (click)="viewPackage(dataItem)"
-                themeColor="primary"
-                size="small"
-                style="margin-right: 8px;">
-                View Details
-              </button>
-              <button
-                kendoButton
-                (click)="copyInstallCommand(dataItem)"
-                themeColor="secondary"
-                size="small">
-                Copy Install
-              </button>
-            </div>
-          </ng-template>
-        </kendo-grid-column>
-
-      </kendo-grid>
-    </kendo-card-body>
-  </kendo-card>
+    </div>
+    
+    <!-- Load More Button -->
+    <div class="load-more-section" *ngIf="hasMorePackages$ | async">
+      <button 
+        kendoButton
+        class="load-more-button"
+        (click)="loadMorePackages()"
+        [disabled]="!!(loading$ | async)"
+        themeColor="primary"
+        fillMode="outline">
+        Load More Packages
+      </button>
+    </div>
+  </div>
 
   <!-- Empty State -->
-  <kendo-card class="empty-state-card" *ngIf="!(loading$ | async) && (gridData$ | async)?.data?.length === 0">
-    <kendo-card-body>
-      <div class="empty-state">
-        <h3>No packages found</h3>
-        <p>Try adjusting your search criteria or check back later.</p>
-      </div>
-    </kendo-card-body>
-  </kendo-card>
-
-  <!-- Load More Button -->
-  <div class="load-more-section" *ngIf="hasMorePackages$ | async">
-    <button 
-      kendoButton
-      class="load-more-button"
-      (click)="loadMorePackages()"
-      [disabled]="!!(loading$ | async)"
-      themeColor="secondary">
-      Load More Packages
-    </button>
+  <div class="empty-state" *ngIf="!(loading$ | async) && (gridData$ | async)?.data?.length === 0">
+    <h3>No packages found</h3>
+    <p>Try adjusting your search criteria or check back later.</p>
   </div>
 
   <!-- API Notice -->
-  <kendo-card class="api-notice-card">
-    <kendo-card-body>
-      <div class="api-notice">
-        <h4>📡 CORS Notice & Mock Data</h4>
-        <p>This application demonstrates fetching Habitat packages, but uses mock data to overcome CORS restrictions 
-           when calling the Habitat API directly from the browser.</p>
-        <div class="cors-details">
-          <p><strong>Why CORS is blocking:</strong></p>
-          <ul>
-            <li>The Habitat API (<code>https://bldr.habitat.sh/v1/depot/pkgs/core</code>) doesn't allow cross-origin requests from browsers</li>
-            <li>Modern browsers enforce CORS policies to prevent unauthorized cross-origin requests</li>
-          </ul>
-          <p><strong>Production solutions:</strong></p>
-          <ul>
-            <li>Use a backend proxy server to handle API requests</li>
-            <li>Configure CORS headers on the Habitat API server</li>
-            <li>Deploy as a server-side rendered application</li>
-          </ul>
-        </div>
-        <p><em>The mock data structure matches the real Habitat API response format for demonstration purposes.</em></p>
-      </div>
-    </kendo-card-body>
-  </kendo-card>
+  <div class="api-notice">
+    <h4>📡 CORS Notice & Mock Data</h4>
+    <p>This application demonstrates fetching Habitat packages, but uses mock data to overcome CORS restrictions 
+       when calling the Habitat API directly from the browser.</p>
+    <div class="cors-details">
+      <p><strong>Why CORS is blocking:</strong></p>
+      <ul>
+        <li>The Habitat API (<code>https://bldr.habitat.sh/v1/depot/pkgs/core</code>) doesn't allow cross-origin requests from browsers</li>
+        <li>Modern browsers enforce CORS policies to prevent unauthorized cross-origin requests</li>
+      </ul>
+      <p><strong>Production solutions:</strong></p>
+      <ul>
+        <li>Use a backend proxy server to handle API requests</li>
+        <li>Configure CORS headers on the Habitat API server</li>
+        <li>Deploy as a server-side rendered application</li>
+      </ul>
+    </div>
+    <p><em>The mock data structure matches the real Habitat API response format for demonstration purposes.</em></p>
+  </div>
 </div>
